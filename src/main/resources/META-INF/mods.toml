@@ -1,0 +1,81 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+license="${mod_license}"
+
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+authors="${mod_authors}"
+description='''${mod_description}'''
+
+# Hard dependency on EpicFight: this mod is useless and would NoClassDefFoundError without it.
+[[dependencies.${mod_id}]]
+    modId="epicfight"
+    mandatory=true
+    versionRange="[20.14.4,)"
+    ordering="AFTER"
+    side="BOTH"
+
+# Optional: Mekanism. When present, the backpack over-carry penalty also counts backpacks stored in the
+# player's private QIO network. Guarded at runtime by ModList.isLoaded("mekanism") + an isolated
+# QioBackpackCounter class, so this mod loads and works fine without Mekanism.
+[[dependencies.${mod_id}]]
+    modId="mekanism"
+    mandatory=false
+    versionRange="[10.4,)"
+    ordering="AFTER"
+    side="BOTH"
+
+# Optional: Curios. When present, the backpack over-carry penalty also counts backpacks equipped in
+# Curios slots. Guarded at runtime by ModList.isLoaded("curios") + an isolated CuriosBackpackCounter.
+[[dependencies.${mod_id}]]
+    modId="curios"
+    mandatory=false
+    versionRange="[5.1,)"
+    ordering="AFTER"
+    side="BOTH"
+
+# Optional: EpicClassMod. When present, the strength gate and the carry allowance scale from the
+# player's alloc_str / class. Soft-linked only (ModList.isLoaded("epicclassmod") + reflection on
+# ECM's client-synced state), so this mod loads and works fine without it.
+[[dependencies.${mod_id}]]
+    modId="epicclassmod"
+    mandatory=false
+    versionRange="[1.0,)"
+    ordering="AFTER"
+    side="BOTH"
+
+# Optional: Sophisticated Backpacks. When present, carrying more backpacks than backpackFreeCount
+# adds a movement penalty. Referenced by item id from config only (backpackItems defaults), so this
+# mod loads and works fine without it.
+[[dependencies.${mod_id}]]
+    modId="sophisticatedbackpacks"
+    mandatory=false
+    versionRange="[3.18,)"
+    ordering="AFTER"
+    side="BOTH"
+
+# Optional: Weaponmaster. When present, its melee sweep (a plain player_attack that bypasses Epic
+# Fight's BASIC_ATTACK_EVENT) is charged Epic Fight stamina by WeaponmasterVanillaGuard. Matched by
+# item namespace at runtime, so this mod loads and works fine without it.
+[[dependencies.${mod_id}]]
+    modId="weaponmaster"
+    mandatory=false
+    versionRange="[1.0,)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="forge"
+    mandatory=true
+    versionRange="${forge_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"

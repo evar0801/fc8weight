@@ -1,0 +1,103 @@
+plugins {
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+}
+
+version = mod_version
+group = mod_group_id
+
+base {
+    archivesName = "${mod_id}-${minecraft_version}"
+}
+
+// Mojang ships Java 17 for 1.18+, target Java 17.
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
+
+minecraft {
+    mappings channel: mapping_channel, version: mapping_version
+    copyIdeResources = true
+
+    runs {
+        configureEach {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                }
+            }
+        }
+        client {
+            property 'forge.enabledGameTestNamespaces', mod_id
+        }
+        server {
+            property 'forge.enabledGameTestNamespaces', mod_id
+            args '--nogui'
+        }
+    }
+}
+
+repositories {
+    // libs/ にサードパーティ mod jar を置いて参照する flatDir
+    flatDir {
+        dir 'libs'
+    }
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    // EpicFight 本体（実機は mods/ から読む。Forge mod jar は依存を同梱しないので compileOnly で十分）。
+    // group id "blank" は flatDir 検索では無視される → ./libs/epicfight-20.14.17.jar に解決。
+    compileOnly fg.deobf("blank:epicfight-20.14.17:20.14.17")
+
+    // Mekanism（QIO ネットワーク内のバックパック数集計に QIOFrequency/FrequencyType を参照）。
+    // 任意(soft)依存: 実行時は ModList.isLoaded("mekanism") でガードし、Mekanism 非導入環境でも動く。
+    // 参照は Mekanism 自前クラスのみ（MC型は fg.deobf が official へ remap → reobfJar で SRG へ戻す）。
+    compileOnly fg.deobf("blank:Mekanism-1.20.1-10.4.16.80:10.4.16.80")
+
+    // Curios（背中スロット等に装備した SBP バックパックの集計に CuriosApi を参照）。
+    // 任意(soft)依存: 実行時は ModList.isLoaded("curios") でガード。libs/curios-5.14.1.jar（"+1.20.1" は
+    // flatDir 座標で扱いにくいのでリネーム済み）。
+    compileOnly fg.deobf("blank:curios-5.14.1:5.14.1")
+}
+
+// mods.toml / pack.mcmeta のプロパティ展開
+tasks.named('processResources', ProcessResources).configure {
+    var replaceProperties = [
+            minecraft_version: minecraft_version, minecraft_version_range: minecraft_version_range,
+            forge_version: forge_version, forge_version_range: forge_version_range,
+            loader_version_range: loader_version_range,
+            mod_id: mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
+            mod_authors: mod_authors, mod_description: mod_description,
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties + [project: project]
+    }
+}
+
+tasks.named('jar', Jar).configure {
+    manifest {
+        attributes([
+                'Specification-Title'     : mod_id,
+                'Specification-Vendor'    : mod_authors,
+                'Specification-Version'   : '1',
+                'Implementation-Title'    : project.name,
+                'Implementation-Version'  : project.jar.archiveVersion,
+                'Implementation-Vendor'   : mod_authors,
+                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+    finalizedBy 'reobfJar'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}

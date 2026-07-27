@@ -1,0 +1,26 @@
+# Gradle / build output
+build/
+.gradle/
+out/
+
+# Third-party mod jars used only as local compile dependencies.
+# NEVER commit these — redistributing other people's mods is not permitted.
+libs/
+
+# Logs
+*.log
+
+# Quarantined files (see the project convention: delete = move to an isolation folder)
+_排除_*/
+
+# Editor / OS
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Forge / MDK run directories
+run/
+runs/
+run-data/
