@@ -6,6 +6,9 @@ Minecraft Forge 1.20.1 / EpicFight 連携の**重量・筋力ゲート mod**。
 約270modの個人運用サーバーで実際に稼働させながら作った。
 設計判断の全記録は [docs/DESIGN_LOG.md](docs/DESIGN_LOG.md) にある。
 
+> **このmodをなぜこう作ったのか**は、ポートフォリオ [evar0801.github.io](https://evar0801.github.io/) に
+> 画面つきでまとめています（10分ほど）。コードを読む前にそちらを見ていただくのが早いです。
+
 ![筋骨が足りず攻撃がキャンセルされた場面](docs/images/hero_attack_canceled.jpg)
 
 *筋骨5のキャラクターが鉄の剣（要求10）を振ろうとした場面。攻撃は発生せず、`武器が重すぎる… 筋骨 5.0 / 必要 10.0` が表示される。*
@@ -227,3 +230,15 @@ mkdir libs
 
 発展途上のmodです。Issue / Discussion での指摘を歓迎します。
 特に自信がないのはティア表の数値バランスと、[docs/DESIGN_LOG.md](docs/DESIGN_LOG.md) 末尾に挙げた**未検証項目**です。
+
+---
+
+### ほかに作ったもの
+
+| | |
+|---|---|
+| **[ポートフォリオ](https://evar0801.github.io/)** | 3つの作品と、その設計判断を1ページに。まずここから |
+| [ShauraDungeonMod](https://github.com/evar0801/ShauraDungeonMod) | 298ファイル・約12,000行のダンジョンmod。ローカルLLMで詰んだ話まで |
+| [MCP-IDS](https://github.com/atmatsuda/techc_hack7) | AIエージェント向けの侵入検知ツール（ハッカソン・実装担当） |
+
+作者: [evar0801](https://github.com/evar0801)
