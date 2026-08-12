@@ -238,7 +238,7 @@ mkdir libs
 | | |
 |---|---|
 | **[ポートフォリオ](https://evar0801.github.io/)** | 3つの作品と、その設計判断を1ページに。まずここから |
-| [ShauraDungeonMod](https://github.com/evar0801/ShauraDungeonMod) | 298ファイル・約12,000行のダンジョンmod。ローカルLLMで詰んだ話まで |
+| [ShauraDungeonMod](https://gitlab.com/evar0801/ShauraDungeonMod) | 298ファイル・約12,000行のダンジョンmod。ローカルLLMで詰んだ話まで |
 | [MCP-IDS](https://github.com/atmatsuda/techc_hack7) | AIエージェント向けの侵入検知ツール（ハッカソン・実装担当） |
 
-作者: [evar0801](https://github.com/evar0801)
+作者: [evar0801](https://gitlab.com/evar0801)
